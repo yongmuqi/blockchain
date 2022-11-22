@@ -1,8 +1,7 @@
 import operator
 
 from aip import AipOcr
-
-from taskCode.actions.mysql import Query
+from taskCode.actions.config import Config
 
 
 class Baidu:
@@ -10,8 +9,10 @@ class Baidu:
     @staticmethod
     def baidu_return_cordinate(text, imagepath):
         APP_ID = '27563132'
-        API_KEY = Query().search_db('others', 1)[2]
-        SECRET_KEY = Query().search_db('others', 2)[2]
+        API_KEY = Config.api_key()
+        print(API_KEY)
+        SECRET_KEY = Config.secret_key()
+        print(SECRET_KEY)
         client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
         # 读取图片
         with open(imagepath, 'rb') as fp:
