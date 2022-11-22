@@ -43,7 +43,7 @@ class run_sign:
 if __name__ == "__main__":
     ts = []
     sem = threading.Semaphore(1)
-    for i in range(1, 2):
+    for i in range(1, 50):
         # i = i + 49
         time.sleep(5)
         # b.work(i)
