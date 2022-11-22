@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/task_list.css">
+    <link rel="stylesheet" href="http://unpkg.com/k-form-design/lib/k-form-design.css">
+    <script src="{{ STATIC_URL }}js/echarts.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-3.6.1.min.js"></script>
+    <title>taskStatus</title>
+</head>
+<body>
+<div id="head_time">
+    <form method="get" action="../status">
+        <label for="start_time">选择时间：</label>
+        <input type="date" id="start_time" name="start_time" class="form-control" placeholder="日期">
+        <button type="submit" id="check" onclick="hideDiv()">查询</button>
+        <a href="../list?start_time={{ task_status.14 }}">详细列表</a>
+    </form>
+</div>
+<div id="Chart">
+    <script type="text/javascript">// 基于准备好的dom，初始化echarts实例
+    const myChart = echarts.init(document.getElementById('Chart'));
+    let Carv = {{ task_status.1 }};
+    let Carv1 = {{ task_status.2 }};
+
+    {#let CMC = {{ task_status.3 }};#}
+    {#let CMC1 = {{ task_status.4 }};#}
+
+    let CGK = {{ task_status.5 }};
+    let CGK1 = {{ task_status.6 }};
+
+    let Zeta = {{ task_status.7 }};
+    let Zeta2 = {{ task_status.8 }};
+    let Zeta1 = {{ task_status.9 }};
+    // 指定图表的配置项和数据
+    const option = {
+        title: {
+            text: '任务状态图表'
+        },
+        tooltip: {},
+        legend: {
+            data: ['成功', '失败']
+        },
+        xAxis: {
+            data: ['Carv', 'CGK', 'Zeta']
+        },
+        yAxis: {},
+        series: [
+            {
+                name: '测试币领取',
+                type: 'bar',
+                data: [0, 0, 0, Zeta2]
+            },
+            {
+                name: '成功',
+                type: 'bar',
+                data: [Carv,  CGK, Zeta]
+            },
+            {
+                name: '失败',
+                type: 'bar',
+                data: [Carv1,  CGK1, Zeta1]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    </script>
+</div>
+<div id="status">
+    <p>{{ task_status.14 }}：总任务数：{{ task_status.0 }}个</p>
+    <p>Carv状态：成功：{{ task_status.1 }}个 | 失败：{{ task_status.2 }}个(
+        {% for obj in task_status.10 %}
+            {{ obj.id }}
+        {% endfor %})</p>
+{#    <p>CoinMarketcap状态：成功：{{ task_status.3 }}个 | 失败：{{ task_status.4 }}个(#}
+{#        {% for obj in task_status.11 %}#}
+{#            {{ obj.id }}#}
+{#        {% endfor %})</p>#}
+    <p>CoinGecko状态：成功：{{ task_status.5 }}个 | 失败：{{ task_status.6 }}个(
+        {% for obj in task_status.12 %}
+            {{ obj.id }}
+        {% endfor %})</p>
+    <p>Zetalabs状态：swap：{{ task_status.7 }}个 | 领取测试币：{{ task_status.8 }}个 | 失败：{{ task_status.9 }}个(
+        {% for obj in task_status.13 %}
+            {{ obj.id }}
+        {% endfor %})</p>
+</div>
+<div class="app" id="runTask">
+    <k-form-build ref="KFB" @submit="handleSubmit" :value="jsonData"></k-form-build>
+    <button @click="getData">运行任务</button>
+</div>
+<script type="text/javascript">
+    function hideDiv(){
+        const date = new Date();
+        const t = date.toLocaleDateString();
+        const a = {{ task_status.14 }};
+        if( a !== t){
+            document.getElementById('runTask').style.display='none';
+        }
+    }
+</script>
+<script src="http://cdn.kcz66.com/vue.min.js"></script>
+<script src="http://unpkg.com/k-form-design/lib/k-form-design.umd.min.js"></script>
+<script>
+    let jsonData = {
+        "list": [{
+            "type": "grid",
+            "label": "栅格布局",
+            "columns": [{
+                "span": 24,
+                "list": [{
+                    "type": "input",
+                    "label": "窗口ID",
+                    "options": {
+                        "type": "text",
+                        "width": "80%",
+                        "placeholder": "请输入窗口ID数字并以,隔开!",
+                        "clearable": false,
+                        "showLabel": true,
+                        "hidden": false,
+                        "disabled": false
+                    },
+                    "model": "input_1668095571841",
+                    "key": "input_1668095571841",
+                    "help": "",
+                    "rules": [{"required": true, "message": "请输入窗口ID"}, {
+                        "pattern": "^[0-9]{1}([0-9]|[,])*$",
+                        "message": "只允许输入数字和逗号！"
+                    }]
+                }, {
+                    "type": "checkbox",
+                    "label": "任务",
+                    "options": {
+                        "disabled": false,
+                        "showLabel": true,
+                        "hidden": false,
+                        "defaultValue": [],
+                        "dynamic": false,
+                        "options": [{"value": "1", "label": "Carv"},
+                            {"value": "2", "label": "CMC"},
+                            {"value": "3", "label": "CGK"},
+                            {"value": "4", "label": "Zeta"}]
+                    },
+                    "model": "checkbox_1668095644157",
+                    "key": "checkbox_1668095644157",
+                    "rules": [{"required": true, "message": "请选择任务"}]
+                }, {
+                    "type": "text",
+                    "label": "",
+                    "icon": "icon-zihao",
+                    "options": {
+                        "textAlign": "center",
+                        "hidden": false,
+                        "showRequiredMark": false,
+                        "noFormItem": true,
+                        "color": "rgba(0, 0, 0, 0.9)",
+                        "fontFamily": "",
+                        "fontSize": "10.5pt"
+                    },
+                    "model": "text_1668095792760",
+                    "key": "text_1668095792760",
+                }]
+            }],
+            "options": {"noFormItem": true, "gutter": 0},
+            "key": "grid_1668095733849"
+        }],
+        "config": {
+            "layout": "horizontal",
+            "labelCol": {"xs": 5, "sm": 5, "md": 5, "lg": 5, "xl": 5, "xxl": 5},
+            "labelWidth": 100,
+            "labelLayout": "Grid",
+            "wrapperCol": {"xs": 19, "sm": 19, "md": 19, "lg": 19, "xl": 19, "xxl": 19},
+            "hideRequiredMark": false,
+        }
+    }
+    let vm = new Vue({
+        el: '.app',
+        data: {
+            jsonData
+        },
+        methods: {
+            handleSubmit(p) {
+                // 通过表单提交按钮触发，获取promise对象
+                p().then(res => {
+                    // 获取数据成功
+                    alert(JSON.stringify(res))
+                })
+                    .catch(err => {
+                        console.log(err, '校验失败')
+                    })
+            },
+            getData() {
+                // 通过函数获取数据
+                this.$refs.KFB.getData().then(res => {
+                    // 获取数据成功
+                    const inputValue = JSON.stringify(res.input_1668095571841);
+                    const checkboxValue = JSON.stringify(res.checkbox_1668095644157);
+                    const textValue = JSON.stringify(res.text_1668095792760);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "../runTask",
+                        data: {"inputValue": res.input_1668095571841, 'checkboxValue': checkboxValue},
+                        dataType: "json",
+                        success: function (backdata, status, xmlHttpRequest) {
+                            {#alert(backdata.code)#}
+                        },
+                        error: function (msg) {
+                            alert("错误内容" + msg)
+                        }
+                    });
+                }).catch(err => {
+                    console.log(err, '校验失败')
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

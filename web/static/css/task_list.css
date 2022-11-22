@@ -1,0 +1,31 @@
+td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+}
+body{
+    text-align: center;
+}
+#task_table{
+    margin: 0 auto;
+}
+#head_time{
+    padding: 10px;
+}
+#Chart{
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+.app{
+    width: 450px;
+    height: 400px;
+    margin: 0 auto;
+}

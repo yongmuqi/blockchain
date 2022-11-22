@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/task_list.css">
+    <title>Title</title>
+</head>
+<body>
+    <div id="head_time">
+        <form method="get" action="../list">
+            <label for="start_time">选择时间：</label>
+            <input type="date" id="start_time" name="start_time" class="form-control" placeholder="日期">
+            <link rel="stylesheet" href="http://unpkg.com/k-form-design/lib/k-form-design.css">
+            <button type="submit" id="check">查询</button>
+            <a href="../status?start_time={{ date }}">任务总览</a>
+        </form>
+    </div>
+    <div id="task_table">
+        <table>
+            <thead>
+                <tr>
+                    <td>窗口序号</td>
+                    <td>日期</td>
+                    <td>运行时间</td>
+                    <td>Carv签到</td>
+{#                    <td>CoinMarketcap钻石领取</td>#}
+                    <td>CoinGecko糖果领取</td>
+                    <td>Zeta交互网</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for obj in data_list %}
+                <tr>
+                    <td>{{ obj.id }}</td>
+                    <td>{{ obj.dayTime }}</td>
+                    <td>{{ obj.runTime }}</td>
+                    <td>{{ obj.Carv }}</td>
+{#                    <td>{{ obj.Coinmarketcap }}</td>#}
+                    <td>{{ obj.Coingecko }}</td>
+                    <td>{{ obj.Zetalabs }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
