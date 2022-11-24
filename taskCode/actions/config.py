@@ -1,4 +1,4 @@
-from taskCode.actions import Query
+from .mysql import Query
 
 
 class Config:

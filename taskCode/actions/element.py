@@ -1,4 +1,4 @@
-from taskCode.actions.find import Find
+from .find import Find
 
 
 class Element:

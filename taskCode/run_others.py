@@ -27,8 +27,8 @@ if __name__ == "__main__":
         #     continue
 
         try:
-            url = 'https://discord.com/channels/915445727600205844/972025568092647454/1040264609589891186'
-            tb.discord.discord_answer('1.png', '2.png', url, 3, 4)
+            url = 'https://discord.com/channels/915445727600205844/972025568092647454/1045338040089985044'
+            tb.discord.discord_answer('1.png', '2.png', url, 2, 1)
         except BaseException:
             continue
         except TimeoutError:

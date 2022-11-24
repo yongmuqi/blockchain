@@ -1,7 +1,7 @@
 import operator
 
 from aip import AipOcr
-from taskCode.actions.config import Config
+from .config import Config
 
 
 class Baidu:

@@ -67,7 +67,7 @@ class Other:
         time.sleep(3)
 
     # Araya Finance测试网交互任务
-    def Araya(self, adsNum):
+    def Araya(self, adsNum, password):
         self.driver.browser.close()
         time.sleep(1)
         self.driver.browser.windows_handles()
@@ -75,7 +75,7 @@ class Other:
         self.driver.browser.windows_handles()
         self.driver.browser.navi_to_page('chrome-extension://pdnijfffcmngbdnhdldgbndpggomemcn/ui.html')
         time.sleep(2)
-        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', '3981786cc')
+        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', password)
         time.sleep(2)
         self.driver.element.click('//*[@id="root"]/div/div/div[2]/main/div/form/button')
         time.sleep(3)
@@ -143,11 +143,11 @@ class Other:
         self.driver.find.xpath_notelement_60sec("//div[contains(@class,'modal-box flex')]")
         print(adsNum, "移除流动性成功")
 
-    def suiA(self, x, adsNum, adsName):
+    def suiA(self, x, adsNum, adsName, password):
         self.driver.browser.close_page()
         self.driver.browser.navi_to_page('chrome-extension://iolfjajodolgbdjecfnlbklhicbafeia/ui.html')
         time.sleep(2)
-        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', '3981786Chencc')
+        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', password)
         time.sleep(2)
         self.driver.element.click('//*[@id="root"]/div/div/div[2]/main/div/form/button')
         time.sleep(3)
@@ -235,11 +235,11 @@ class Other:
         notion = self.driver.element.get_text_60sec("//h1[contains(@class,'text-black text-lg')]" and "//h1[text()='Delegate Completed']")
         textFile.write_txt_data(adsNum + notion)
 
-    def wizard(self, adsNum):
+    def wizard(self, adsNum, password):
         self.driver.browser.close_page()
         self.driver.browser.navi_to_page('chrome-extension://iolfjajodolgbdjecfnlbklhicbafeia/ui.html')
         time.sleep(2)
-        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', '3981786cc')
+        self.driver.element.send_keys('//*[@id="root"]/div/div/div[2]/main/div/form/label/input', password)
         time.sleep(2)
         self.driver.element.click('//*[@id="root"]/div/div/div[2]/main/div/form/button')
         time.sleep(3)
@@ -262,10 +262,9 @@ class Other:
         notion = self.driver.alert.get_alert_text()
         textFile.write_txt_data(adsNum + notion)
 
-    def gamma_x(self, adsNum, adsMail, adsName, adsAddress):
+    def gamma_x(self, adsNum, adsMail, adsName, adsAddress, password):
         firstName = adsName.split(" ")[0]
         lastName = adsName.split(" ")[1]
-        password = '3981786cc'
         self.driver.browser.close_page()
         self.driver.browser.navi_to_page('https://gammax.exchange/')
         time.sleep(3)

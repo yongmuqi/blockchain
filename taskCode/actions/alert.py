@@ -1,4 +1,4 @@
-from taskCode.actions.wait import Wait
+from .wait import Wait
 
 
 class Alert:

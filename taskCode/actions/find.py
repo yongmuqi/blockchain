@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
-
-from taskCode.actions.wait import Wait
+from .wait import Wait
 
 
 class Find:

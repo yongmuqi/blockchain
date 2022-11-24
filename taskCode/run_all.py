@@ -7,7 +7,7 @@ from task import taskBase
 
 
 class run_sign:
-
+    @staticmethod
     def work(x):
         # 定义acc为账号id
         adsId = Config.adsId(x)
@@ -23,15 +23,25 @@ class run_sign:
         driver = Driver.Driver(open_url)
         tb = taskBase(driver)
 
-        print(x)
+        try:
+            tb.wallet.metamask_login(adsNum)
+        except BaseException:
+            pass
 
-        tb.wallet.metamask_login(adsNum)
+        try:
+            tb.carv.carv_checkin(adsNum)
+        except BaseException:
+            pass
 
-        # tb.carv.carv_checkin(adsNum)
-        #
-        # tb.coingecko.coingecko_get(adsNum)
+        try:
+            tb.coingecko.coingecko_get(adsNum)
+        except BaseException:
+            pass
 
-        tb.zetalabs.zeta_swap(adsNum)
+        try:
+            tb.zetalabs.zeta_getToken(adsNum)
+        except BaseException:
+            pass
 
         driver.quit()
         requests.get(close_url)

@@ -25,10 +25,10 @@ if __name__ == "__main__":
     except BaseException:
         pass
 
-    try:
-        tb.carv.carv_checkin(adsNum)
-    except BaseException:
-        pass
+    # try:
+    #     tb.carv.carv_checkin(adsNum)
+    # except BaseException:
+    #     pass
 
     # try:
     #     tb.carv.carv_Dragonball(adsNum)

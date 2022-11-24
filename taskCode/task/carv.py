@@ -58,7 +58,7 @@ class Carv:
         self.driver.element.click(self.carv_ethereum_button_xpath)
         time.sleep(3)
         # 定义TAB次数为16次，如果有Check-in按钮，则TAB次数为12次
-        count = 16
+        count = 17
         try:
             self.driver.find.xpath_element(self.carv_checkin_button_xpath)
         except BaseException:
