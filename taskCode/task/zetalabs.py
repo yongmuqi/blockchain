@@ -15,14 +15,14 @@ class Zetalabs:
     zetalabs_get_button = "//button[text()='Request Assets']"
     zetalabs_next_time = "(//p[contains(@class,'MuiTypography-root MuiTypography-body1')]/following-sibling::p)[2]"
     zetalabs_try_swapping = "//button[text()='Try Swapping!']"
-    zetalabs_swapNetwork = "//button[@class='css-pshyj1 ecs3q253']"
-    zetalabs_swapToken = "(//button[contains(@class,'MuiButtonBase-root MuiButton-root')])[3]"
+    zetalabs_swapNetwork = "(//img[@alt='select'])[2]"
+    zetalabs_swapToken = "(//img[@alt='select'])[3]"
     zetalabs_receiveNetwork = "(//button[contains(@class,'MuiButtonBase-root MuiButton-root')])[3]"
     zetalabs_receiveToken = "(//button[@class='css-pshyj1 ecs3q253']/following-sibling::button)[2]"
     zetalabs_input = "//input[contains(@class,'sm:text-left text-right')]"
     zetalabs_review_button = "(//button[contains(@class,'MuiButtonBase-root MuiButton-root')])[3]"
     zetalabs_empower_button = "(//div[@class='css-1x9yzpb egmuoqj0']//button)[2]"
-    zetalabs_swap_button = "(//div[@class='css-1x9yzpb egmuoqj0']//button)[2]"
+    zetalabs_swap_button = "//button[text()='Swap']"
     zetalabs_notice = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation')]"
     # 数据库表头
     taskName = 'Zetalabs'
@@ -32,6 +32,7 @@ class Zetalabs:
         self.wallet = Wallet(driver)
         self.q = Query()
         self.qe = Query()
+        self.q_swapTime = Query()
 
     # zetalabs网站领取测试币功能
     def zeta_getToken(self, adsNum):
@@ -43,7 +44,7 @@ class Zetalabs:
             self.driver.element.click(self.zetalabs_get_button)
             try:
                 # 测试币领好后获取try-swapping按钮
-                self.driver.find.xpath_element_60sec(self.zetalabs_try_swapping)
+                self.driver.find.xpath_element_presence_60sec(self.zetalabs_try_swapping)
                 self.q.add(self.taskName, self.zetalabs_getToken, adsNum)
             except BaseException:
                 pass
@@ -83,6 +84,7 @@ class Zetalabs:
             self.driver.element.click(self.zetalabs_review_button)
             time.sleep(5)
         swap = self.driver.element.get_text(self.zetalabs_empower_button)
+        print(swap)
         if swap == 'Swap':
             self.driver.element.click(self.zetalabs_swap_button)
             time.sleep(5)
@@ -104,3 +106,4 @@ class Zetalabs:
             self.qe.add(self.taskName, notion, adsNum)
         else:
             self.qe.add(self.taskName, self.zetalabs_success, adsNum)
+            self.q_swapTime.add('ZetalabsTime', time.ctime(), adsNum)

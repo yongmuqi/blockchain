@@ -62,7 +62,7 @@ class Carv:
         try:
             self.driver.find.xpath_element(self.carv_checkin_button_xpath)
         except BaseException:
-            count = 12
+            count = 13
         for x in range(count):
             self.driver.mouse.keyboard_element(Keys.TAB)
         # 点击ENTER按钮，等待5秒，等待metamask页面的出现

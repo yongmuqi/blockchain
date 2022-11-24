@@ -40,6 +40,14 @@ class Query:
         except BaseException:
             print("Error: 没有找到数据")
 
+    # 统计数据库总行数
+    def all_db(self, db_name):
+        sql = "SELECT * FROM " + db_name
+        # 使用cursor()方法获取操作游标
+        cursor = self.conn.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
     def add(self, taskName, value, acd):
         dayTime = time.strftime('%Y-%m-%d')
         nowTime = time.strftime('%H:%M:%S')

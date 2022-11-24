@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path, include
 
 import web
-from web import views
+from web import views, urls
 
 urlpatterns = [
     #    path('admin/', admin.site.urls),

@@ -1,15 +1,14 @@
 import time
 import requests
 
-import main.config.accountID as ca
-from main.actions.driver import Driver
-from main.task import taskBase
+from taskCode.actions import Config
+from taskCode.actions.driver import Driver
+from taskCode.task import taskBase
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 
-from task.models import AdsTask
+from web.models import AdsTask
 
 
 def index(request):
@@ -82,41 +81,41 @@ def runTask(request):
 
     for x in inputNum:
         # 定义acc为账号id
-        acId = ca.accountall[x][0]
-        # 定义acd为账户名称
-        acName = ca.accountall[x][1]
+        adsId = Config.adsId(x)
+        # 定义adsNUm为窗口编号
+        adsNum = Config.adsNum(x)
         url = "http://local.adspower.net:50325/api/v1/browser/"
-        open_url = url + "start?user_id=" + acId + "&open_tabs=1"
-        close_url = url + "stop?user_id=" + acId
+        open_url = url + "start?user_id=" + adsId + "&open_tabs=1"
+        close_url = url + "stop?user_id=" + adsId
         driver = Driver.Driver(open_url)
         tb = taskBase(driver)
 
         try:
-            tb.metamask.metamask_login(acName)
+            tb.wallet.metamask_login(adsNum)
         except BaseException:
             continue
 
         if '1' in checkboxNum:
             try:
-                tb.carv.carv_checkin(acName)
+                tb.carv.carv_checkin(adsNum)
             except BaseException:
                 pass
 
         if '2' in checkboxNum:
             try:
-                tb.coinmarketcap.coinmarketcap_get(acName)
+                tb.coinmarketcap.coinmarketcap_get(adsNum)
             except BaseException:
                 pass
 
         if '3' in checkboxNum:
             try:
-                tb.coingecko.coingecko_get(acName)
+                tb.coingecko.coingecko_get(adsNum)
             except BaseException:
                 pass
 
         if '4' in checkboxNum:
             try:
-                tb.zetalabs.zeta_getToken(acName)
+                tb.zetalabs.zeta_getToken(adsNum)
             except BaseException:
                 pass
 

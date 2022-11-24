@@ -48,7 +48,7 @@ class Wait:
     # 等待页面元素出现判断元素是否可以点击,等待时长：10秒
     def wait_element_to_be_clickable(self, xpath):
         locator = (By.XPATH, xpath)
-        element = WebDriverWait(self.driver, 10, 1).until(EC.element_to_be_clickable(locator))
+        element = WebDriverWait(self.driver, 30, 1).until(EC.element_to_be_clickable(locator))
         return element
 
     # 等待页面弹窗出现并切入弹窗内

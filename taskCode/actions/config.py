@@ -3,6 +3,16 @@ from taskCode.actions import Query
 
 class Config:
     @staticmethod
+    def all_ads():
+        all_ads = Query().all_db('ads_config')
+        return all_ads
+
+    @staticmethod
+    def all_bit():
+        all_bit = Query().all_db('bit_config')
+        return all_bit
+
+    @staticmethod
     def adsId(x):
         ads_config = Query().search_db('ads_config', x)
         adsId = ads_config[1]

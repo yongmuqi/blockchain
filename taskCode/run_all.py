@@ -7,7 +7,7 @@ from task import taskBase
 
 
 class run_sign:
-    @staticmethod
+
     def work(x):
         # 定义acc为账号id
         adsId = Config.adsId(x)
@@ -23,13 +23,15 @@ class run_sign:
         driver = Driver.Driver(open_url)
         tb = taskBase(driver)
 
-        # tb.wallet.metamask_login(adsNum)
+        print(x)
+
+        tb.wallet.metamask_login(adsNum)
 
         # tb.carv.carv_checkin(adsNum)
         #
         # tb.coingecko.coingecko_get(adsNum)
 
-        # tb.zetalabs.zeta_swap(adsNum)
+        tb.zetalabs.zeta_swap(adsNum)
 
         driver.quit()
         requests.get(close_url)
@@ -41,12 +43,11 @@ class run_sign:
 
 
 if __name__ == "__main__":
-    ts = []
-    sem = threading.Semaphore(1)
-    for i in range(1, 50):
-        # i = i + 49
+    all_adsNum = Config.all_ads()
+    threadList = []
+    sem = threading.Semaphore(2)
+    for i in range(1, len(all_adsNum)+1):
         time.sleep(5)
-        # b.work(i)
-        t = threading.Thread(target=run_sign.run_thread, args=(i,))
-        ts.append(t)
-        t.start()
+        thread = threading.Thread(target=run_sign.run_thread, args=(i,))
+        threadList.append(thread)
+        thread.start()
