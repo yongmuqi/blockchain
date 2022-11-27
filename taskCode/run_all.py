@@ -1,63 +1,52 @@
 import threading
 import time
 import requests
-from actions.driver import Driver
 from actions.config import Config
 from task import taskBase
+from taskCode.actions.drivers import Drivers
 
 
-class run_sign:
-    @staticmethod
-    def work(x):
+class run_all:
+    def __init__(self):
+        self.driver = Drivers()
+
+
+    def taskDriver(self, Num):
         # 定义acc为账号id
-        adsId = Config.adsId(x)
+        adsId = Config.adsId(Num)
         # 定义adsNUm为窗口编号
-        adsNum = Config.adsNum(x)
+        adsNum = Config.adsNum(Num)
         # 定义adsAddress为钱包地址
-        adsAddress = Config.adsAddress(x)
+        adsAddress = Config.adsAddress(Num)
         # 定义password为密码
         password = Config.password()
         url = "http://local.adspower.net:50325/api/v1/browser/"
-        open_url = url + "start?user_id=" + adsId + "&open_tabs=1"
         close_url = url + "stop?user_id=" + adsId
-        driver = Driver.Driver(open_url)
+        # 设置奇数窗口在坐，偶数窗口在右
+        if (Num % 2) == 0:
+            align = 'right'
+            driver = self.driver.Driver(adsId, align)
+        else:
+            align = 'left'
+            driver = self.driver.Driver(adsId, align)
+
         tb = taskBase(driver)
-
-        try:
-            tb.wallet.metamask_login(adsNum)
-        except BaseException:
-            pass
-
-        try:
-            tb.carv.carv_checkin(adsNum)
-        except BaseException:
-            pass
-
-        try:
-            tb.coingecko.coingecko_get(adsNum)
-        except BaseException:
-            pass
-
-        try:
-            tb.zetalabs.zeta_getToken(adsNum)
-        except BaseException:
-            pass
+        tb.wallet.metamask_login(adsNum)
 
         driver.quit()
         requests.get(close_url)
 
-    @staticmethod
-    def run_thread(x):
+    def work(self, Num):
         with sem:
-            run_sign.work(x)
+            self.taskDriver(Num)
 
 
 if __name__ == "__main__":
     all_adsNum = Config.all_ads()
-    threadList = []
     sem = threading.Semaphore(2)
+    threadList = []
     for i in range(1, len(all_adsNum)+1):
-        time.sleep(5)
-        thread = threading.Thread(target=run_sign.run_thread, args=(i,))
+        time.sleep(3)
+        thread = threading.Thread(target=run_all().work, args=(i,))
         threadList.append(thread)
         thread.start()

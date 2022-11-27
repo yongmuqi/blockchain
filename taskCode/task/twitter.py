@@ -1,6 +1,9 @@
 import time
+from random import choice
 
 from taskCode.actions import actionsBase
+from taskCode.actions.textFile import textFile
+from taskCode.config.dictumText import dictumText
 
 
 class Twitter:
@@ -47,3 +50,26 @@ class Twitter:
         self.driver.element.click('//*[@id="register-submit"]')
         notion = self.driver.element.get_text_60sec('//*[@id="registration_status"]/div/div')
         print(acd, notion)
+
+    # 推特发推功能
+    def sendTwitter(self, adsNum):
+        # choice随机从列表中取值
+        text = choice(dictumText)
+        self.driver.browser.close_page()
+        self.driver.browser.navi_to_page('https://twitter.com/home')
+        time.sleep(5)
+        try:
+            self.driver.element.click("//a[@data-testid='SideNav_NewTweet_Button']")
+            time.sleep(5)
+            try:
+                self.driver.element.click(
+                    '//*[@id="layers"]/div[3]/div/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div[4]/div/span')
+            except BaseException:
+                pass
+            self.driver.element.click("//div[@class='public-DraftStyleDefault-block public-DraftStyleDefault-ltr']")
+            self.driver.element.send_keys(
+                "//div[@class='public-DraftStyleDefault-block public-DraftStyleDefault-ltr']", text)
+            self.driver.element.click("//div[@data-testid='tweetButton']")
+        except BaseException:
+            notion = adsNum + '发推失败'
+            textFile.write_txt_data(notion)

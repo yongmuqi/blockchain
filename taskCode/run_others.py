@@ -5,7 +5,8 @@ from taskCode.task import taskBase
 
 if __name__ == "__main__":
     all_adsNum = Config.all_ads()
-    for x in range(1, len(all_adsNum)+1):
+    list = [17, 23, 25, 40]
+    for x in list:
         # x = x + 28
         # 定义acc为账号id
         adsId = Config.adsId(x)
@@ -26,15 +27,16 @@ if __name__ == "__main__":
         # except BaseException:
         #     continue
 
-        try:
-            url = 'https://discord.com/channels/915445727600205844/972025568092647454/1045338040089985044'
-            tb.discord.discord_answer('1.png', '2.png', url, 2, 1)
-        except BaseException:
-            continue
-        except TimeoutError:
-            continue
+        # try:
+        #     url = 'https://discord.com/channels/915445727600205844/972025568092647454/1045338040089985044'
+        #     tb.discord.discord_answer('1.png', '2.png', url, 2, 1)
+        # except BaseException:
+        #     continue
+        # except TimeoutError:
+        #     continue
 
         # tb.other.AVAXFaucet(acName, acAddress)
+        tb.twitter.sendTwitter(adsNum)
 
         driver.quit()
         requests.get(close_url)
