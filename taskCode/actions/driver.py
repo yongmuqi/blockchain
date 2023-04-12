@@ -1,3 +1,5 @@
+import time
+
 import requests
 from selenium import webdriver
 
@@ -10,6 +12,11 @@ class Driver:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("debuggerAddress", resp["data"]["ws"]["selenium"])
         driver = webdriver.Chrome(chrome_driver, options=chrome_options)
-        driver.maximize_window()
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                    Object.defineProperty(navigator, 'webdriver', {
+                        get: () => False
+                    })
+                """})
         driver.set_page_load_timeout(120)
         return driver

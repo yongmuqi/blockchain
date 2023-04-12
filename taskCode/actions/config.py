@@ -107,3 +107,9 @@ class Config:
         others = Query().search_db('others', 2)
         SECRET_KEY = others[2]
         return SECRET_KEY
+
+    @staticmethod
+    def yescaptcha_key():
+        others = Query().search_db('others', 1)
+        yescaptcha_key = others[3]
+        return yescaptcha_key

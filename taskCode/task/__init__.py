@@ -9,6 +9,8 @@ from .other import Other
 from .scroll import Scroll
 from .twitter import Twitter
 from .zetalabs import Zetalabs
+from .discord_Xpath import discord
+from .fusionist import fusionist
 
 
 class taskBase:
@@ -23,6 +25,8 @@ class taskBase:
         self.scroll = Scroll(driver)
         self.coingecko = Coingecko(driver)
         self.discord = Discord(driver)
+        self.discords = discord(driver)
         self.twitter = Twitter(driver)
         self.layer3 = Layer3(driver)
         self.other = Other(driver)
+        self.fusionist = fusionist(driver)

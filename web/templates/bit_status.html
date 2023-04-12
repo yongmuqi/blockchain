@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/task_list.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+
+    <script src="../static/js/echarts.js"></script>
+    <script src="../static/js/jquery-3.6.1.min.js"></script>
+    <title>taskStatus</title>
+</head>
+<body>
+<div id="head_time">
+    <blockquote class="layui-elem-quote layui-text">
+        <form class="layui-form layui-form-pane" method="get" action="../bitstatus">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="bit_time">选择日期：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="bit_time" name="bit_time" placeholder="YYYY-MM-DD">
+                </div>
+                <button type="submit" id="check" class="layui-btn">查询</button>
+                <button type="submit" id="check" class="layui-btn layui-btn-normal">
+                    <a style="color: #ffffff" href="../bitlist?bit_time={{ bit_status.11 }}">任务列表</a>
+                </button>
+            </div>
+        </form>
+    </blockquote>
+    <script type="text/javascript" src="../static/layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use('laydate', function () {
+            const laydate = layui.laydate;
+            laydate.render({
+                elem: '#bit_time',
+                theme: 'molv',
+                trigger: 'click',
+                value: '{{ bit_status.11 }}',
+            });
+        });
+    </script>
+</div>
+<div class="layui-bg-gray" style="padding: 20px; text-align: center">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-blue">
+                    {{ bit_status.11 }}：总任务数：{{ bit_status.0 }}个
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Carv签到任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ bit_status.1 }}个 | 失败：{{ bit_status.2 }}个(
+                            {% for obj in bit_status.8 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Carv" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">CoinGecko糖果领取</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ bit_status.3 }}个 | 失败：{{ bit_status.4 }}个(
+                            {% for obj in bit_status.9 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_CGK" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Zetalabs每日任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            swap：{{ bit_status.5 }}个 | 领取测试币：{{ bit_status.6 }}个 |
+                            失败：{{ bit_status.7 }}个(
+                            {% for obj in bit_status.10 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Zeta" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Cassava每日任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ bit_status.13 }}个 | 失败：{{ bit_status.14 }}个(
+                            {% for obj in bit_status.15 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Cass" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Layer3每日签到</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ bit_status.16 }}个 | 失败：{{ bit_status.17 }}个(
+                            {% for obj in bit_status.18 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Layer" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">CMC钻石签到</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ bit_status.21 }}个 | 失败：{{ bit_status.22 }}个(
+                            {% for obj in bit_status.23 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Coinmarketcap" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-bg-gray" style="padding:0 20px 20px 20px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">任务状态</div>
+                <div class="layui-card-body">
+                    <div class="layui-form layui-form-pane">
+                        <div class="layui-form-item">
+                            <label for="taskNum" class="layui-form-label">窗口编号</label>
+                            <div class="layui-input-block">
+                                <input id="taskNum" type="text" name="taskNum" autocomplete="off" placeholder="请输入窗口编号" class="layui-input">
+                            </div>
+                            <div class="layui-form-item" style="margin-top: 5px">
+                                <label class="layui-form-label">选择任务</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" id="carv" name="carv" title="Carv">
+                                    <input type="checkbox" id="layer" name="layer" title="Layer">
+                                    <input type="checkbox" id="ckg" name="ckg" title="CKG">
+                                    <input type="checkbox" id="zeta" name="zeta" title="Zeta">
+                                    <input type="checkbox" id="cassava" name="cassava" title="Cassava">
+                                    <input type="checkbox" id="coinmarketcap" name="coinmarketcap" title="CMC">
+                                </div>
+                                <div class="layui-form-item" style="margin-top: 10px">
+                                    <div class="layui-input-block">
+                                        <button type="submit" id="btnSubmit" class="layui-btn">运行任务</button>
+                                        <button type="button" id="bitAllSubmit" class="layui-btn">全部任务</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSubmit").on('click', function () {
+            const carv = $("input[name='carv']:checked").val();
+            const taskNum = $("#taskNum").val();
+            const layer = $("input[name='layer']:checked").val();
+            const ckg = $("input[name='ckg']:checked").val();
+            const zeta = $("input[name='zeta']:checked").val();
+            const cassava = $("input[name='cassava']:checked").val();
+            const coinmarketcap = $("input[name='coinmarketcap']:checked").val();
+
+            $.ajax({
+                type: "GET",
+                url: "../bitTask",
+                data: {"carv": carv, 'taskNum': taskNum, 'ckg': ckg, 'zeta': zeta, 'cassava': cassava, 'layer': layer, 'coinmarketcap': coinmarketcap},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bitAllSubmit").on('click', function () {
+            const taskNum = $("#taskNum").val();
+
+            $.ajax({
+                type: "GET",
+                url: "../bitAllTask",
+                data: {'taskNum': taskNum},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const carv = [];
+        {% for obj in bit_status.8 %}
+            carv.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Carv").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': carv.toString(), 'num': 1},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const CKG = [];
+        {% for obj in bit_status.9 %}
+            CKG.push({{ obj.id }})
+        {% endfor %}
+        $("#run_CGK").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': CKG.toString(), 'num': 3},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const zeta = [];
+        {% for obj in bit_status.10 %}
+            zeta.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Zeta").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': zeta.toString(), 'num': 4},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const cass = [];
+        {% for obj in bit_status.15 %}
+            cass.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Cass").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': cass.toString(), 'num': 5},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const layer = [];
+        {% for obj in bit_status.18 %}
+            layer.push({{ obj.id }})
+        {% endfor %};
+        $("#run_Layer").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': layer.toString(), 'num': 2},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const coinmarketcap = [];
+        {% for obj in bit_status.23 %}
+            coinmarketcap.push({{ obj.id }})
+        {% endfor %};
+        $("#run_Coinmarketcap").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runFailTask",
+                data: {'taskName': coinmarketcap.toString(), 'num': 6},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

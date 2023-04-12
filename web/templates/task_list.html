@@ -2,46 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/task_list.css">
-    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap-table-zh-CN.js"></script>
+
+    <title>AdsPower任务列表</title>
 </head>
 <body>
-    <div id="head_time">
-        <form method="get" action="../list">
-            <label for="start_time">选择时间：</label>
-            <input type="date" id="start_time" name="start_time" class="form-control" placeholder="日期">
-            <link rel="stylesheet" href="http://unpkg.com/k-form-design/lib/k-form-design.css">
-            <button type="submit" id="check">查询</button>
-            <a href="../status?start_time={{ date }}">任务总览</a>
+<div id="head_time">
+    <blockquote class="layui-elem-quote layui-text">
+        <form class="layui-form layui-form-pane" method="get" action="../status">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="start_time">选择日期：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="start_time" name="start_time" placeholder="YYYY-MM-DD">
+                </div>
+                <button type="submit" id="check" class="layui-btn">查询</button>
+                <button type="submit" id="check" class="layui-btn layui-btn-normal">
+                    <a style="color: #ffffff" href="../status?start_time={{ date }}">任务总览</a></button>
+            </div>
         </form>
-    </div>
-    <div id="task_table">
-        <table>
-            <thead>
-                <tr>
-                    <td>窗口序号</td>
-                    <td>日期</td>
-                    <td>运行时间</td>
-                    <td>Carv签到</td>
-{#                    <td>CoinMarketcap钻石领取</td>#}
-                    <td>CoinGecko糖果领取</td>
-                    <td>Zeta交互网</td>
-                </tr>
-            </thead>
-            <tbody>
-            {% for obj in data_list %}
-                <tr>
-                    <td>{{ obj.id }}</td>
-                    <td>{{ obj.dayTime }}</td>
-                    <td>{{ obj.runTime }}</td>
-                    <td>{{ obj.Carv }}</td>
-{#                    <td>{{ obj.Coinmarketcap }}</td>#}
-                    <td>{{ obj.Coingecko }}</td>
-                    <td>{{ obj.Zetalabs }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    </blockquote>
+    <script type="text/javascript" src="../static/layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use('laydate', function () {
+            const laydate = layui.laydate;
+            laydate.render({
+                elem: '#start_time',
+                theme: 'molv',
+                trigger: 'click',
+                value: '{{ date }}',
+            });
+        });
+    </script>
+</div>
+<div id="task_table">
+    <table id="table_page" style="text-align: center">
+        <thead>
+        <tr>
+            <td>序号</td>
+            <td>日期</td>
+            <td>运行时间</td>
+            <td>Carv签到</td>
+            <td>CGK糖果领取</td>
+            <td>Zeta交互网</td>
+            <td>CMC钻石签到</td>
+            <td>Cassava</td>
+            <td>Layer3</td>
+            <td>Soquest</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in data_list %}
+            <tr>
+                <td>{{ obj.id }}</td>
+                <td>{{ obj.dayTime }}</td>
+                <td>{{ obj.runTime }}</td>
+                <td>{{ obj.Carv }}</td>
+                <td>{{ obj.Coingecko }}</td>
+                <td>{{ obj.Zetalabs }}</td>
+                <td>{{ obj.Coinmarketcap }}</td>
+                <td>{{ obj.Cassava }}</td>
+                <td>{{ obj.Layer3 }}</td>
+                <td>{{ obj.Soquest }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            $("#table_page").bootstrapTable({
+                pagination: true, //是否分页
+                sidePagination: 'client', //server:服务器端分页|client：前端分页
+                pageSize: 15, //单页记录数
+                pageList: [15],
+                columns: [{
+                    field: 'Num',
+                    title: '序号'
+                }, {
+                    field: 'dayTime',
+                    title: '日期'
+                }, {
+                    field: 'nowTime',
+                    title: '运行时间'
+                }, {
+                    field: 'Carv',
+                    title: 'Carv签到'
+                }, {
+                    field: 'CGK',
+                    title: 'CGK糖果领取'
+                }, {
+                    field: 'Zeta',
+                    title: 'Zeta交互网'
+                }, {
+                    field: 'CMC',
+                    title: 'CMC钻石签到'
+                }, {
+                    field: 'Cassava',
+                    title: 'Cassava'
+                }, {
+                    field: 'Layer3',
+                    title: 'Layer3'
+                }, {
+                    field: 'Soquest',
+                    title: 'Soquest'
+                }]
+            });
+        });
+    </script>
+</div>
 </body>
 </html>

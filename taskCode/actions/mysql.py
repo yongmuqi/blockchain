@@ -27,6 +27,63 @@ class Query:
         results = cursor.fetchall()
         return results[0]
 
+    def add_wallet(self, tableName, taskName, value, x):
+        sql = "SELECT * FROM " + tableName + " WHERE id = %s"
+        # 使用cursor()方法获取操作游标
+        cursor = self.conn.cursor()
+        cursor.execute(sql, x)
+        # 获取所有记录列表
+        results = cursor.fetchall()
+        sql = "update " + tableName + " set " + taskName + "=%s  where  id = %s"
+        val = (value, x)
+        cursor.execute(sql, val)
+        self.conn.commit()
+
+    # 查找数据（2个条件）
+    def findDate(self, tableName, taskName, value):
+        dayTime = time.strftime('%Y-%m-%d')
+        sql = "SELECT * FROM " + tableName + " WHERE dayTime = '" + dayTime + "' AND (" + taskName + " LIKE '%" + value + "%' OR " + taskName + " IS NULL)"
+        # 使用cursor()方法获取操作游标
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(sql)
+            # 获取所有记录列表
+            results = cursor.fetchall()
+            result_list = [row[0] for row in results]
+            return result_list
+        except BaseException:
+            print("Error: 没有找到数据")
+
+    # 查找数据（3个条件）
+    def findDate_3(self, tableName, taskName, value1, value2):
+        dayTime = time.strftime('%Y-%m-%d')
+        sql = "SELECT * FROM " + tableName + " WHERE dayTime = '" + dayTime + "' AND (" + taskName + " LIKE '%" + value1 + "%' OR " + taskName + " LIKE '%" + value2 + "%' OR " + taskName + " IS NULL)"
+        # 使用cursor()方法获取操作游标
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(sql)
+            # 获取所有记录列表
+            results = cursor.fetchall()
+            result_list = [row[0] for row in results]
+            return result_list
+        except BaseException:
+            print("Error: 没有找到数据")
+
+    # 查找数据（2个条件，不包含某个字符）
+    def findDate_No(self, tableName, taskName, value):
+        dayTime = time.strftime('%Y-%m-%d')
+        sql = "SELECT * FROM " + tableName + " WHERE dayTime = '" + dayTime + "' AND (" + taskName + " NOT LIKE '%" + value + "%' OR " + taskName + " IS NULL)"
+        # 使用cursor()方法获取操作游标
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(sql)
+            # 获取所有记录列表
+            results = cursor.fetchall()
+            result_list = [row[0] for row in results]
+            return result_list
+        except BaseException:
+            print("Error: 没有找到数据")
+
     def fetch(self, dayTime):
         sql = "SELECT * FROM ads_task WHERE dayTime = %s "
         na = dayTime
@@ -48,10 +105,10 @@ class Query:
         cursor.execute(sql)
         return cursor.fetchall()
 
-    def add(self, taskName, value, acd):
+    def add(self, tableName, taskName, value, acd):
         dayTime = time.strftime('%Y-%m-%d')
         nowTime = time.strftime('%H:%M:%S')
-        selectSql = "SELECT * FROM ads_task WHERE id = '" + acd + "' and dayTime = '" + dayTime + "'"
+        selectSql = "SELECT * FROM " + tableName + " WHERE id = '" + acd + "' and dayTime = '" + dayTime + "'"
         # 使用cursor()方法获取操作游标
         cursor = self.conn.cursor()
         cursor.execute(selectSql)
@@ -59,27 +116,24 @@ class Query:
         results = cursor.fetchall()
 
         if len(results) > 0:
-            sql = "update ads_task set " + taskName + "=%s ,runTime = %s  where  id = %s and dayTime = %s"
+            sql = "update " + tableName + " set " + taskName + "=%s ,runTime = %s  where  id = %s and dayTime = %s"
             val = (value, nowTime, acd, dayTime)
             cursor.execute(sql, val)
             self.conn.commit()
-            self.conn.close()
         else:
-            sql = 'INSERT INTO ads_task (id, dayTime, runTime,' + taskName + ') VALUES (%s,%s,%s,%s)'
+            sql = 'INSERT INTO ' + tableName + ' (id, dayTime, runTime,' + taskName + ') VALUES (%s,%s,%s,%s)'
             val = (acd, dayTime, nowTime, value)
             cursor.execute(sql, val)
             self.conn.commit()
-            self.conn.close()
 
-    def delete(self):
+    def delete(self, tableName):
         dayTime = datetime.datetime.today().date()
         lastTime = dayTime - datetime.timedelta(days=2)
-        sql = "DELETE FROM ads_task WHERE dayTime <= %s"
+        sql = "DELETE FROM " + tableName + " WHERE dayTime <= %s"
         val = lastTime
         cursor = self.conn.cursor()
         cursor.execute(sql, val)
         self.conn.commit()
-        self.conn.close()
 
     def close(self):
         self.conn.close()

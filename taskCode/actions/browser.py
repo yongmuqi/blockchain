@@ -1,6 +1,7 @@
 import time
 
 import requests
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class Browser:
@@ -33,6 +34,13 @@ class Browser:
     def windows_handles(self):
         all_handles = self.driver.window_handles
         self.driver.switch_to.window(all_handles[0])
+
+    # 等待新窗口出现
+    def wait_for_new_window(self):
+        all_handles = self.driver.window_handles
+        yield
+        WebDriverWait(self.driver, 20).until(
+            lambda driver: len(all_handles) != len(self.driver.window_handles))
 
     # 关闭浏览器页面只剩1个
     def close_page(self):

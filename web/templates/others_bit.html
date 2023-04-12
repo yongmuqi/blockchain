@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/task_list.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap-table-zh-CN.js"></script>
+
+    <title>Bit-其他任务</title>
+</head>
+<body>
+<div id="head_time">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <form class="layui-form layui-form-pane" method="get" action="../othersbit">
+                <div class="layui-inline">
+                    <label class="layui-form-label" for="start_time">选择日期：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="start_time" name="start_time" placeholder="YYYY-MM-DD">
+                    </div>
+                    <button type="submit" id="check" class="layui-btn">查询</button>
+                    <button type="submit" id="check" class="layui-btn layui-btn-normal">
+                        <a style="color: #ffffff" href="../othersads?start_time={{ bitDate }}">Ads-其他任务</a>
+                    </button>
+                </div>
+            </form>
+            <script type="text/javascript" src="../static/layui/layui.js"></script>
+            <script type="text/javascript">
+                layui.use('laydate', function () {
+                    const laydate = layui.laydate;
+                    laydate.render({
+                        elem: '#start_time',
+                        theme: 'molv',
+                        trigger: 'click',
+                        value: '{{ bitDate }}',
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<div id="task_table">
+    <table id="table_page" style="text-align: center">
+        <thead>
+        <tr>
+            <td>窗口序号</td>
+            <td>时间</td>
+            <td>其他任务-1</td>
+            <td>其他任务-2</td>
+            <td>其他任务-3</td>
+            <td>其他任务-4</td>
+            <td>其他任务-5</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in bit_list %}
+            <tr>
+                <td>{{ obj.id }}</td>
+                <td>{{ obj.runTime }}</td>
+                <td>{{ obj.OtherTask1 }}</td>
+                <td>{{ obj.OtherTask2 }}</td>
+                <td>{{ obj.OtherTask3 }}</td>
+                <td>{{ obj.OtherTask4 }}</td>
+                <td>{{ obj.OtherTask5 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            $("#table_page").bootstrapTable({
+                pagination: true, //是否分页
+                sidePagination: 'client', //server:服务器端分页|client：前端分页
+                pageSize: 15, //单页记录数
+                pageList: [15],
+                columns: [{
+                    field: 'Num',
+                    title: '窗口序号'
+                }, {
+                    field: 'runTime',
+                    title: '时间'
+                }, {
+                    field: 'nowTime',
+                    title: '其他任务-1'
+                }, {
+                    field: 'Carv',
+                    title: '其他任务-2'
+                }, {
+                    field: 'CGK',
+                    title: '其他任务-3'
+                }, {
+                    field: 'Zeta',
+                    title: '其他任务-4'
+                }, {
+                    field: 'Dragon',
+                    title: '其他任务-5'
+                }]
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

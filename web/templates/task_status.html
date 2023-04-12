@@ -2,220 +2,419 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/task_list.css">
-    <link rel="stylesheet" href="http://unpkg.com/k-form-design/lib/k-form-design.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+
     <script src="../static/js/echarts.js"></script>
     <script src="../static/js/jquery-3.6.1.min.js"></script>
     <title>taskStatus</title>
 </head>
 <body>
 <div id="head_time">
-    <form method="get" action="../status">
-        <label for="start_time">选择时间：</label>
-        <input type="date" id="start_time" name="start_time" class="form-control" placeholder="日期">
-        <button type="submit" id="check" onclick="hideDiv()">查询</button>
-        <a href="../list?start_time={{ task_status.14 }}">详细列表</a>
-    </form>
-</div>
-<div id="Chart">
-    <script type="text/javascript">// 基于准备好的dom，初始化echarts实例
-    const myChart = echarts.init(document.getElementById('Chart'));
-    let Carv = {{ task_status.1 }};
-    let Carv1 = {{ task_status.2 }};
-
-    {#let CMC = {{ task_status.3 }};#}
-    {#let CMC1 = {{ task_status.4 }};#}
-
-    let CGK = {{ task_status.5 }};
-    let CGK1 = {{ task_status.6 }};
-
-    let Zeta = {{ task_status.7 }};
-    let Zeta2 = {{ task_status.8 }};
-    let Zeta1 = {{ task_status.9 }};
-    // 指定图表的配置项和数据
-    const option = {
-        title: {
-            text: '任务状态图表'
-        },
-        tooltip: {},
-        legend: {
-            data: ['成功', '失败']
-        },
-        xAxis: {
-            data: ['Carv', 'CGK', 'Zeta']
-        },
-        yAxis: {},
-        series: [
-            {
-                name: '测试币领取',
-                type: 'bar',
-                data: [0, 0, 0, Zeta2]
-            },
-            {
-                name: '成功',
-                type: 'bar',
-                data: [Carv,  CGK, Zeta]
-            },
-            {
-                name: '失败',
-                type: 'bar',
-                data: [Carv1,  CGK1, Zeta1]
-            }
-        ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    <blockquote class="layui-elem-quote layui-text">
+        <form class="layui-form layui-form-pane" method="get" action="../status">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="start_time">选择日期：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="start_time" name="start_time" placeholder="YYYY-MM-DD">
+                </div>
+                <button type="submit" id="check" class="layui-btn">查询</button>
+                <button type="submit" id="check" class="layui-btn layui-btn-normal">
+                    <a style="color: #ffffff" href="../list?start_time={{ task_status.14 }}">任务列表</a></button>
+            </div>
+        </form>
+    </blockquote>
+    <script type="text/javascript" src="../static/layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use('laydate', function () {
+            const laydate = layui.laydate;
+            laydate.render({
+                elem: '#start_time',
+                theme: 'molv',
+                trigger: 'click',
+                value: '{{ task_status.14 }}',
+            });
+        });
     </script>
 </div>
-<div id="status">
-    <p>{{ task_status.14 }}：总任务数：{{ task_status.0 }}个</p>
-    <p>Carv状态：成功：{{ task_status.1 }}个 | 失败：{{ task_status.2 }}个(
-        {% for obj in task_status.10 %}
-            {{ obj.id }}
-        {% endfor %})</p>
-{#    <p>CoinMarketcap状态：成功：{{ task_status.3 }}个 | 失败：{{ task_status.4 }}个(#}
-{#        {% for obj in task_status.11 %}#}
-{#            {{ obj.id }}#}
-{#        {% endfor %})</p>#}
-    <p>CoinGecko状态：成功：{{ task_status.5 }}个 | 失败：{{ task_status.6 }}个(
-        {% for obj in task_status.12 %}
-            {{ obj.id }}
-        {% endfor %})</p>
-    <p>Zetalabs状态：swap：{{ task_status.7 }}个 | 领取测试币：{{ task_status.8 }}个 | 失败：{{ task_status.9 }}个(
-        {% for obj in task_status.13 %}
-            {{ obj.id }}
-        {% endfor %})</p>
+<div class="layui-bg-gray" style="padding: 20px; text-align: center">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-blue">
+                    {{ task_status.14 }}：总任务数：{{ task_status.0 }}个
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Carv签到任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.1 }}个 | 失败：{{ task_status.2 }}个(
+                            {% for obj in task_status.10 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Carv" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">CoinGecko糖果领取</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.5 }}个 | 失败：{{ task_status.6 }}个(
+                            {% for obj in task_status.12 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_CKG" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Zetalabs每日任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            swap：{{ task_status.7 }}个 | 领取测试币：{{ task_status.8 }}个 |
+                            失败：{{ task_status.9 }}个(
+                            {% for obj in task_status.13 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Zeta" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Cassava每日任务</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.16 }}个 | 失败：{{ task_status.17 }}个(
+                            {% for obj in task_status.18 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Cass" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Layer3每日签到</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.19 }}个 | 失败：{{ task_status.20 }}个(
+                            {% for obj in task_status.21 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Layer" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">Soquest每日签到</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.22 }}个 | 失败：{{ task_status.23 }}个(
+                            {% for obj in task_status.25 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Soquest" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header layui-bg-green">CMC钻石签到</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md9">
+                            成功：{{ task_status.3 }}个 | 失败：{{ task_status.4 }}个(
+                            {% for obj in task_status.11 %}
+                                {{ obj.id }}
+                            {% endfor %})
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="submit" id="run_Coinmarketcap" class="layui-btn layui-btn-sm layui-btn-danger">运行失败</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="app" id="runTask">
-    <k-form-build ref="KFB" @submit="handleSubmit" :value="jsonData"></k-form-build>
-    <button @click="getData">运行任务</button>
+<div class="layui-bg-gray" style="padding:0 20px 20px 20px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form layui-form-pane">
+                        <div class="layui-form-item">
+                            <label for="taskNum" class="layui-form-label">窗口编号</label>
+                            <div class="layui-input-block">
+                                <input id="taskNum" type="text" name="taskNum" autocomplete="off" placeholder="请输入窗口编号" class="layui-input">
+                            </div>
+                            <div class="layui-form-item" style="margin-top: 5px">
+                                <label class="layui-form-label">选择任务</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" id="carv" name="carv" title="Carv">
+                                    <input type="checkbox" id="layer" name="layer" title="Layer">
+                                    <input type="checkbox" id="ckg" name="ckg" title="CKG">
+                                    <input type="checkbox" id="zeta" name="zeta" title="Zeta">
+                                    <input type="checkbox" id="cassava" name="cassava" title="Cassava">
+                                    <input type="checkbox" id="soquest" name="soquest" title="Soquest">
+                                    <input type="checkbox" id="coinmarketcap" name="coinmarketcap" title="CMC">
+                                </div>
+                                <div class="layui-form-item" style="margin-top: 10px">
+                                    <div class="layui-input-block">
+                                        <button type="button" id="btnSubmit" class="layui-btn">运行任务</button>
+                                        <button type="button" id="adsAllSubmit" class="layui-btn">全部任务</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-    function hideDiv(){
-        const date = new Date();
-        const t = date.toLocaleDateString();
-        const a = {{ task_status.14 }};
-        if( a !== t){
-            document.getElementById('runTask').style.display='none';
-        }
-    }
-</script>
-<script src="http://cdn.kcz66.com/vue.min.js"></script>
-<script src="http://unpkg.com/k-form-design/lib/k-form-design.umd.min.js"></script>
-<script>
-    let jsonData = {
-        "list": [{
-            "type": "grid",
-            "label": "栅格布局",
-            "columns": [{
-                "span": 24,
-                "list": [{
-                    "type": "input",
-                    "label": "窗口ID",
-                    "options": {
-                        "type": "text",
-                        "width": "80%",
-                        "placeholder": "请输入窗口ID数字并以,隔开!",
-                        "clearable": false,
-                        "showLabel": true,
-                        "hidden": false,
-                        "disabled": false
-                    },
-                    "model": "input_1668095571841",
-                    "key": "input_1668095571841",
-                    "help": "",
-                    "rules": [{"required": true, "message": "请输入窗口ID"}, {
-                        "pattern": "^[0-9]{1}([0-9]|[,])*$",
-                        "message": "只允许输入数字和逗号！"
-                    }]
-                }, {
-                    "type": "checkbox",
-                    "label": "任务",
-                    "options": {
-                        "disabled": false,
-                        "showLabel": true,
-                        "hidden": false,
-                        "defaultValue": [],
-                        "dynamic": false,
-                        "options": [{"value": "1", "label": "Carv"},
-                            {#{"value": "2", "label": "CMC"},#}
-                            {"value": "3", "label": "CGK"},
-                            {"value": "4", "label": "Zeta"}]
-                    },
-                    "model": "checkbox_1668095644157",
-                    "key": "checkbox_1668095644157",
-                    "rules": [{"required": true, "message": "请选择任务"}]
-                }, {
-                    "type": "text",
-                    "label": "",
-                    "icon": "icon-zihao",
-                    "options": {
-                        "textAlign": "center",
-                        "hidden": false,
-                        "showRequiredMark": false,
-                        "noFormItem": true,
-                        "color": "rgba(0, 0, 0, 0.9)",
-                        "fontFamily": "",
-                        "fontSize": "10.5pt"
-                    },
-                    "model": "text_1668095792760",
-                    "key": "text_1668095792760",
-                }]
-            }],
-            "options": {"noFormItem": true, "gutter": 0},
-            "key": "grid_1668095733849"
-        }],
-        "config": {
-            "layout": "horizontal",
-            "labelCol": {"xs": 5, "sm": 5, "md": 5, "lg": 5, "xl": 5, "xxl": 5},
-            "labelWidth": 100,
-            "labelLayout": "Grid",
-            "wrapperCol": {"xs": 19, "sm": 19, "md": 19, "lg": 19, "xl": 19, "xxl": 19},
-            "hideRequiredMark": false,
-        }
-    }
-    let vm = new Vue({
-        el: '.app',
-        data: {
-            jsonData
-        },
-        methods: {
-            handleSubmit(p) {
-                // 通过表单提交按钮触发，获取promise对象
-                p().then(res => {
-                    // 获取数据成功
-                    alert(JSON.stringify(res))
-                })
-                    .catch(err => {
-                        console.log(err, '校验失败')
-                    })
-            },
-            getData() {
-                // 通过函数获取数据
-                this.$refs.KFB.getData().then(res => {
-                    // 获取数据成功
-                    const inputValue = JSON.stringify(res.input_1668095571841);
-                    const checkboxValue = JSON.stringify(res.checkbox_1668095644157);
-                    const textValue = JSON.stringify(res.text_1668095792760);
+    $(document).ready(function () {
+        $("#btnSubmit").on('click', function () {
+            const carv = $("input[name='carv']:checked").val();
+            const taskNum = $("#taskNum").val();
+            const layer = $("input[name='layer']:checked").val();
+            const ckg = $("input[name='ckg']:checked").val();
+            const zeta = $("input[name='zeta']:checked").val();
+            const cassava = $("input[name='cassava']:checked").val();
+            const soquest = $("input[name='soquest']:checked").val();
+            const coinmarketcap = $("input[name='coinmarketcap']:checked").val();
 
-                    $.ajax({
-                        type: "GET",
-                        url: "../runTask",
-                        data: {"inputValue": res.input_1668095571841, 'checkboxValue': checkboxValue},
-                        dataType: "json",
-                        success: function (backdata, status, xmlHttpRequest) {
-                            {#alert(backdata.code)#}
-                        },
-                        error: function (msg) {
-                            alert("错误内容" + msg)
-                        }
-                    });
-                }).catch(err => {
-                    console.log(err, '校验失败')
-                })
-            }
-        }
-    })
+            $.ajax({
+                type: "GET",
+                url: "../runTask",
+                data: {"carv": carv, 'taskNum': taskNum, 'ckg': ckg, 'zeta': zeta, 'cassava': cassava, 'layer': layer, 'soquest': soquest, 'coinmarketcap': coinmarketcap},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#adsAllSubmit").on('click', function () {
+            const taskNum = $("#taskNum").val();
+
+            $.ajax({
+                type: "GET",
+                url: "../adsAllTask",
+                data: {'taskNum': taskNum},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const carv = [];
+        {% for obj in task_status.10 %}
+            carv.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Carv").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': carv.toString(), 'num': 1},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const CKG = [];
+        {% for obj in task_status.12 %}
+            CKG.push({{ obj.id }})
+        {% endfor %}
+        $("#run_CKG").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': CKG.toString(), 'num': 3},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const zeta = [];
+        {% for obj in task_status.13 %}
+            zeta.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Zeta").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': zeta.toString(), 'num': 4},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const cass = [];
+        {% for obj in task_status.18 %}
+            cass.push({{ obj.id }})
+        {% endfor %}
+        $("#run_Cass").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': cass.toString(), 'num': 5},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const layer = [];
+        {% for obj in task_status.21 %}
+            layer.push({{ obj.id }})
+        {% endfor %};
+        $("#run_Layer").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': layer.toString(), 'num': 2},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const soquest = [];
+        {% for obj in task_status.24 %}
+            soquest.push({{ obj.id }})
+        {% endfor %};
+        $("#run_Soquest").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': soquest.toString(), 'num': 6},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const coinmarketcap = [];
+        {% for obj in task_status.11 %}
+            coinmarketcap.push({{ obj.id }})
+        {% endfor %};
+        $("#run_Coinmarketcap").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "../runAdsFailTask",
+                data: {'taskName': coinmarketcap.toString(), 'num': 7},
+                dataType: "json",
+                success: function (backdata, status, xmlHttpRequest) {
+                    $("#taskNum").val(backdata.code)
+                },
+                error: function (msg) {
+                    $("#taskNum").val("错误内容" + msg)
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

@@ -6,7 +6,7 @@ from taskCode.actions.mysql import Query
 
 class GoerliETH:
     # goerli-token页面元素
-    goerli_url = 'https://mumbaifaucet.com/'
+    goerli_url = 'https://goerlifaucet.com/'
     goerLi_timeOut = 'goerliETH还没到领取时间'
     goerLi_fail = '领取失败'
     goerLi_success = 'goerliETH领取成功'

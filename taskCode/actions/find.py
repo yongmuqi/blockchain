@@ -15,6 +15,20 @@ class Find:
     def xpath_element(self, xpath):
         return self.wait.wait_visibility_of_element(xpath)
 
+    def xpath_element_t(self, by, xpath, t):
+        return self.wait.wait_visibility_of_element_t(by, xpath, t)
+
+    def xpath_element_CSS(self, xpath):
+        return self.wait.wait_visibility_of_element_CSS(xpath)
+
+    # 封装定位元素xpath功能，等待3秒（元素可见）
+    def xpath_element_3sec(self, xpath):
+        return self.wait.wait_visibility_of_element_3sec(xpath)
+
+    # 封装定位全部元素xpath功能，等待10秒（元素可见）
+    def xpath_elements(self, xpath):
+        return self.wait.wait_presence_of_elements(xpath)
+
     # 封装定位元素xpath功能，等待60秒（元素可见）
     def xpath_element_visibility_60sec(self, xpath):
         return self.wait.wait_visibility_of_element_60sec(xpath)

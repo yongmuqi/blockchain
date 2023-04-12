@@ -16,7 +16,9 @@ class Discord:
     def discord_answer(self, img1, img2, url, x, y):
         # 打开DISCORD答题页面
         self.driver.browser.navi_to_page(url)
-        time.sleep(15)
+        time.sleep(10)
+        # 点击（1，1）坐标，防止有弹窗
+        self.driver.mouse.offset_click_00()
         timestring = time.strftime('%Y-%m-%d-')
         # 获取当前屏幕截图，并保存第一个截图
         self.driver.browser.screenshot(img1)
@@ -25,19 +27,31 @@ class Discord:
         offset = Baidu.baidu_return_cordinate(self.discord_text, imagepath)
         # 点击第一个问题
         self.driver.mouse.offset_click(offset[1], offset[0])
-        time.sleep(3)
+        time.sleep(2)
         # 通过X来点击第一个问题的答案
         answer = offset[0] + x * 40
         self.driver.mouse.offset_click(offset[1], answer)
-        time.sleep(5)
+        time.sleep(3)
         # 获取当前屏幕截图，并保存第二个截图
         self.driver.browser.screenshot(img2)
         imagepath = self.discord_imagepath + timestring + img2
         # 判断第二个截图和第二个问题的坐标
         offset = Baidu.baidu_return_cordinate(self.discord_text, imagepath)
         self.driver.mouse.offset_click(offset[1], offset[0])
-        time.sleep(3)
+        time.sleep(2)
         # 通过Y来点击第二个问题的答案
         answer = offset[0] + y * 40
         self.driver.mouse.offset_click(offset[1], answer)
-        time.sleep(5)
+        time.sleep(3)
+
+        # # 获取当前屏幕截图，并保存第二个截图
+        # self.driver.browser.screenshot(img3)
+        # imagepath = self.discord_imagepath + timestring + img3
+        # # 判断第二个截图和第二个问题的坐标
+        # offset = Baidu.baidu_return_cordinate(self.discord_text, imagepath)
+        # self.driver.mouse.offset_click(offset[1], offset[0])
+        # time.sleep(3)
+        # # 通过Y来点击第二个问题的答案
+        # answer = offset[0] + z * 40
+        # self.driver.mouse.offset_click(offset[1], answer)
+        # time.sleep(5)
